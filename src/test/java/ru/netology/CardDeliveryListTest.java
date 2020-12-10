@@ -2,15 +2,15 @@ package ru.netology;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.withText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selectors.*;
+import static com.codeborne.selenide.Selenide.*;
 
 public class CardDeliveryListTest {
     @BeforeEach
@@ -20,11 +20,12 @@ public class CardDeliveryListTest {
 
     @Test
     void shouldRegister() {
-        $("[data-test-id=city] input").setValue("Ка");
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+        $("[data-test-id=city] input").setValue("Во");
+        $$(byXpath("//div[text()='Во']"));
+        $(byText("Волгоград")).click();
         Calendar cal = new GregorianCalendar();
-        cal.add(Calendar.DAY_OF_YEAR, 3);
+        cal.add(Calendar.DAY_OF_YEAR, 7);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
         String string = sdf.format(cal.getTime());
         $("[placeholder='Дата встречи']").clear();
         $("[placeholder='Дата встречи']").setValue(string);
