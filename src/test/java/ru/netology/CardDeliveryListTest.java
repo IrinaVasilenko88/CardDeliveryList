@@ -1,13 +1,14 @@
 package ru.netology;
 
+import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -21,19 +22,19 @@ public class CardDeliveryListTest {
     @Test
     void shouldRegister() {
         $("[data-test-id=city] input").setValue("Во");
-        $$(byXpath("//div[text()='Во']"));
         $(byText("Волгоград")).click();
-        Calendar cal = new GregorianCalendar();
-        cal.add(Calendar.DAY_OF_YEAR, 7);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
-        String string = sdf.format(cal.getTime());
-        $("[placeholder='Дата встречи']").clear();
-        $("[placeholder='Дата встречи']").setValue(string);
+        $("[data-test-id=date] [value]").click();
+        LocalDate dateToday = LocalDate.now();
+        LocalDate dateOfMeeting = LocalDate.now().plusDays(7);
+        String s = LocalDate.now().plusDays(7).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        if (dateOfMeeting.getDayOfMonth()>dateToday.getDayOfMonth()){
+            $(".calendar__arrow_direction_right[data-step='1']").click();
+        }
         $("[name='name']").setValue("Иванов Иван");
         $("[name='phone']").setValue("+71111111111");
         $("[data-test-id=agreement]").click();
         $("[class='button__text']").click();
-        $(withText("Успешно!")).waitUntil(visible, 15000);
+        $("[data-test-id=notification]").waitUntil(Condition.visible, 15000).shouldHave(exactText("Успешно! Встреча успешно забронирована на " + s));
 
     }
 
