@@ -22,5 +22,7 @@
 ```
 git clone https://github.com/IrinaVasilenko88/CardDeliveryList.git
 ``` 
-1. Открыть склонированный проект в Intellij IDEA
-1. Запустить команду ```gradlew test```
+2. Открыть склонированный проект в Intellij IDEA
+3. Открыть в терминале каталог ```artifacts```
+3. Для запуска приложения ввести команду ```java -jar app-card-delivery.jar```
+4. Запустить команду ```gradlew test```
